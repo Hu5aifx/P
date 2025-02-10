@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            background: linear-gradient(135deg, #f8b500, #fceabb);
+            color: #333;
+            animation: fadeIn 1s ease-in-out;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border-radius: 10px;
+            background: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            animation: slideUp 1s ease-in-out;
+        }
+        input, button {
+            margin: 10px;
+            padding: 12px;
+            width: 90%;
+            border-radius: 5px;
+            border: none;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        input {
+            border: 1px solid #ccc;
+            box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            background: linear-gradient(135deg, #ff6f61, #ff4b3a);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        button:hover {
+            background: linear-gradient(135deg, #ff4b3a, #d9534f);
+            transform: scale(1.05);
+        }
+        .result {
+            font-weight: bold;
+            margin-top: 20px;
+            font-size: 20px;
+            color: #444;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background: #ffcc80;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        li:hover {
+            background: #ffb74d;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+            font-weight: bold;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 style="color: #ff6f61;">BMI Calculator</h2>
+        <img src="https://cdn-icons-png.flaticon.com/512/2920/2920323.png" width="80" alt="BMI Icon">
+        <input type="number" id="height" placeholder="Enter height (in inches)" required>
+        <input type="number" id="weight" placeholder="Enter weight (in pounds)" required>
+        <button onclick="calculateBMI()">Calculate BMI</button>
+        <div class="result" id="bmiResult"></div>
+        <h3 style="color: #ff6f61;">Previous Results</h3>
+        <ul id="history"></ul>
+        <div class="footer">Made by Huzaifa Babar</div>
+    </div>
+
+    <script>
+        function calculateBMI() {
+            let height = parseFloat(document.getElementById('height').value);
+            let weight = parseFloat(document.getElementById('weight').value);
+            if (!height || !weight) {
+                alert("Please enter valid height and weight.");
+            } else {
+                let heightInMeters = height * 0.0254;
+                let bmi = weight / (heightInMeters * heightInMeters);
+                let category = getBMICategory(bmi);
+                let resultText = `BMI: ${bmi.toFixed(2)} - ${category}`;
+                document.getElementById('bmiResult').innerText = resultText;
+                saveBMI(resultText);
+            }
+        }
+
+        function getBMICategory(bmi) {
+            if (bmi < 18.5) {
+                return "Underweight";
+            } else if (bmi < 24.9) {
+                return "Normal weight";
+            } else if (bmi < 29.9) {
+                return "Overweight";
+            } else {
+                return "Obese";
+            }
+        }
+
+        function saveBMI(resultText) {
+            let history = JSON.parse(localStorage.getItem("bmiHistory")) || [];
+            history.push(resultText);
+            localStorage.setItem("bmiHistory", JSON.stringify(history));
+            displayHistory();
+        }
+
+        function displayHistory() {
+            let history = JSON.parse(localStorage.getItem("bmiHistory")) || [];
+            let historyList = document.getElementById("history");
+            historyList.innerHTML = "";
+            history.forEach(entry => {
+                let li = document.createElement("li");
+                li.textContent = entry;
+                historyList.appendChild(li);
+            });
+        }
+
+        window.onload = displayHistory;
+    </script>
+</body>
+</html>
