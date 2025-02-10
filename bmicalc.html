@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            animation: fadeIn 1s ease-in-out;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border-radius: 10px;
+            background: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            animation: slideUp 1s ease-in-out;
+            color: black;
+        }
+        input, button {
+            margin: 10px;
+            padding: 12px;
+            width: 90%;
+            border-radius: 5px;
+            border: none;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        input {
+            border: 1px solid #ccc;
+            box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            background: linear-gradient(135deg, #ff6f61, #ff4b3a);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        button:hover {
+            background: linear-gradient(135deg, #ff4b3a, #d9534f);
+            transform: scale(1.05);
+        }
+        .result {
+            font-weight: bold;
+            margin-top: 20px;
+            font-size: 20px;
+            color: #444;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 style="color: #ff6f61;">BMI Calculator</h2>
+        <img src="https://cdn-icons-png.flaticon.com/512/2920/2920323.png" width="80" alt="BMI Icon">
+        <input type="number" id="height" placeholder="Enter height (in inches)" required>
+        <input type="number" id="weight" placeholder="Enter weight (in pounds)" required>
+        <button onclick="calculateBMI()">Calculate BMI</button>
+        <button onclick="reload()">Clear</button>
+        <div class="result" id="bmiResult"></div>
+        <p id="message"></p>
+        <div class="footer">Made by Huzaifa Babar</div>
+    </div>
+
+    <script>
+        function calculateBMI() {
+            let height = parseFloat(document.getElementById('height').value);
+            let weight = parseFloat(document.getElementById('weight').value);
+            if (!height || !weight) {
+                alert("Please enter valid height and weight.");
+                return;
+            }
+
+            let bmi = (weight / (height * height)) * 703;
+            document.getElementById('bmiResult').innerText = `Your BMI is: ${bmi.toFixed(2)}`;
+
+            let message = "";
+            if (bmi < 18.5) {
+                message = "You are underweight. Eat something!";
+            } else if (bmi >= 18.5 && bmi <= 24.9) {
+                message = "You have a healthy weight!";
+            } else if (bmi >= 25 && bmi <= 29.9) {
+                message = "You are overweight. Consider exercising!";
+            } else {
+                message = "You are obese. Please consult a doctor!";
+            }
+            document.getElementById('message').innerText = message;
+        }
+
+          function reload() {
+    document.getElementById('height').value = "";
+    document.getElementById('weight').value = "";
+}
+
+    </script>
+</body>
+</html>
